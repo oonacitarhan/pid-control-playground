@@ -1,0 +1,5 @@
+Actual verification date: 2026-11-01
+Command: python3 pid.py
+
+Final time, speed, control: (14.99, 0.6987576970111227, 0.698927500279211)
+Self-tests passed
