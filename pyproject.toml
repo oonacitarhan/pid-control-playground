@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pid-control-playground"
+version = "0.2.0"
+description = "Evaluate discrete PID settings on a first-order motor simulation with disturbance injection and control-quality metrics."
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+include = ["controlbench*"]
