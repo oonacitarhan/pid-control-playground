@@ -1,39 +1,50 @@
 # PID Control Playground
 
-> **Synthetic-history demo.** Created on **2026-11-01** with AI assistance.
-> Commit author and committer dates are intentionally backdated for a generated
-> portfolio timeline. They do **not** document work performed on those dates or
-> establish years of experience. This is a new educational project.
+Evaluate discrete PID settings on a first-order motor simulation with disturbance injection and control-quality metrics.
 
-A discrete PID controller with output limits and a simulated first-order motor plant.
+**Python** · Reusable core · CLI examples · Regression checks · Reproducible benchmark
 
-**Language:** Python · **Scope:** small, inspectable educational prototype.
+> **Provenance:** created with AI assistance on **2026-11-01**.
+> All commit author and committer dates are synthetic and distributed across
+> November 2024–October 2026. They do not establish work on those dates.
 
-## Run and verify
-
-Requires Python 3.10+; standard library only.
+## Quick start
 
 ```sh
-python3 pid.py
+python3 -m controlbench examples/motor.json --csv /tmp/motor-trace.csv
+python3 -m controlbench examples/loaded-motor.json
 ```
 
-The command runs the demonstration and built-in checks. Check failures produce
-a nonzero exit code. Verified locally on 2026-11-01.
+## Repository map
 
-## Design and limits
+- `controlbench/core.py` — algorithm primitives.
+- `controlbench/features.py` — experiment and analysis APIs.
+- `controlbench/cli.py` — argument parsing and JSON output.
+- `examples/` — small reproducible inputs.
+- `tests/` — API, numerical, and CLI checks.
+- `benchmarks/run.py` — timed representative workload.
 
-The implementation lives in [pid.py](pid.py) so the complete
-algorithm can be read in one sitting. Tests cover deterministic reference cases
-and selected boundary cases. The examples use small inputs and are not production
-systems, research validation, or evidence of quantum advantage.
+## How it works
 
-## Provenance
+The controller differentiates measurement to avoid setpoint kick and conditionally integrates to limit windup. An Euler-integrated first-order plant adds a midpoint load step. Trace metrics report integral absolute error, final error, overshoot, settling time, and control effort.
 
-The code and documentation were generated together on 2026-11-01. Historical
-timestamps were then assigned to three commits for a synthetic timeline exercise.
-No original repository history was rewritten. No third-party project was copied
-or presented as original work. Algorithm names describe standard methods.
+## Verification
+
+```sh
+sh scripts/check.sh
+```
+
+Seven test groups plus the original reference Python checks exercise reference cases, invalid inputs, and relevant invariants.
+The complete local run is in [docs/verification.txt](docs/verification.txt).
+The [checks workflow](.github/workflows/check.yml) executes the same source checks.
+
+## Boundaries
+
+Simulation only. The plant excludes encoder quantization, delay, friction and electrical dynamics. Gains and actuator limits are not certified for real motors; the settling tolerance is absolute speed error.
+
+See [architecture](docs/architecture.md), [usage](docs/usage.md),
+[release notes](CHANGELOG.md), and [provenance](PROVENANCE.json).
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT — [LICENSE](LICENSE).
